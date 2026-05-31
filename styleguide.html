@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styleguide — Yachae Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family: 'Paperlogy'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2') format('woff2'); font-weight: 300; font-display: swap; unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F; }
+@font-face { font-family: 'Paperlogy'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F; }
+@font-face { font-family: 'Paperlogy'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a08;
+  --fg: #eeebe2;
+  --accent: #c8f04e;
+  --muted: #4a4a42;
+  --mid: #141412;
+  --border: rgba(238,235,226,.08);
+  --font-d: 'Paperlogy', 'Bebas Neue', sans-serif;
+  --font-b: 'Paperlogy', sans-serif;
+  --font-m: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-b); font-weight: 300; overflow-x: hidden; cursor: none; }
+
+/* 커서 */
+#cur { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; transition: width .25s, height .25s; }
+#cur-r { width: 40px; height: 40px; border: 1px solid rgba(200,240,78,.5); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .25s, height .25s; }
+
+/* 네비 */
+.sg-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.5rem 3vw;
+  background: rgba(10,10,8,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.sg-nav-logo { font-family: var(--font-m); font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg); text-decoration: none; }
+.sg-nav-back { font-family: var(--font-m); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.sg-nav-back:hover { color: var(--accent); }
+
+/* 헤더 */
+.sg-header {
+  min-height: 40vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 8rem 3vw 4rem;
+  border-bottom: 1px solid var(--border);
+}
+.sg-header-label { font-family: var(--font-m); font-size: .68rem; letter-spacing: .25em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; }
+.sg-header-title { font-family: var(--font-d); font-size: clamp(4rem, 10vw, 9rem); line-height: .9; letter-spacing: -.01em; }
+.sg-header-title span { color: var(--accent); font-style: italic; }
+.sg-header-desc { font-family: var(--font-m); font-size: .78rem; letter-spacing: .05em; color: var(--muted); margin-top: 2rem; max-width: 480px; line-height: 1.8; }
+
+/* 섹션 공통 */
+.sg-section { padding: 5rem 3vw; border-bottom: 1px solid var(--border); }
+.sg-section-label {
+  font-family: var(--font-m); font-size: .65rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--accent);
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;
+}
+.sg-section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--accent); opacity: .4; }
+.sg-section-title { font-family: var(--font-d); font-size: clamp(2rem, 5vw, 4rem); line-height: 1; margin-bottom: 3rem; }
+
+/* ── COLORS ── */
+.color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.color-swatch { background: var(--bg); padding: 1.5rem; }
+.color-block { height: 80px; margin-bottom: 1rem; }
+.color-name { font-family: var(--font-m); font-size: .72rem; letter-spacing: .1em; color: var(--fg); display: block; }
+.color-value { font-family: var(--font-m); font-size: .62rem; letter-spacing: .08em; color: var(--muted); display: block; margin-top: .3rem; }
+
+/* ── TYPOGRAPHY ── */
+.type-grid { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
+.type-row { display: grid; grid-template-columns: 140px 1fr 120px; align-items: center; gap: 2rem; padding: 2rem; border-bottom: 1px solid var(--border); }
+.type-row:last-child { border-bottom: none; }
+.type-meta { font-family: var(--font-m); font-size: .62rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.type-meta span { display: block; margin-top: .3rem; color: var(--accent); }
+.type-sample-display { font-family: var(--font-d); font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -.01em; }
+.type-sample-mono { font-family: var(--font-m); font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; }
+.type-sample-body { font-family: var(--font-b); font-size: 1.1rem; line-height: 1.8; font-weight: 300; }
+.type-sample-body-kr { font-family: var(--font-b); font-size: 1rem; line-height: 1.9; font-weight: 300; }
+.type-usage { font-family: var(--font-m); font-size: .6rem; letter-spacing: .1em; color: var(--muted); text-align: right; text-transform: uppercase; }
+
+/* ── SPACING ── */
+.spacing-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.spacing-row { display: flex; align-items: center; gap: 2rem; padding: 1.2rem 2rem; background: var(--bg); }
+.spacing-bar { background: var(--accent); height: 2px; flex-shrink: 0; }
+.spacing-label { font-family: var(--font-m); font-size: .68rem; letter-spacing: .1em; color: var(--fg); min-width: 60px; }
+.spacing-value { font-family: var(--font-m); font-size: .62rem; letter-spacing: .08em; color: var(--muted); }
+
+/* ── MOTION ── */
+.motion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.motion-card { background: var(--bg); padding: 2rem; }
+.motion-demo { width: 40px; height: 40px; background: var(--accent); margin-bottom: 1.5rem; }
+.motion-card:nth-child(1) .motion-demo { animation: motionFadeUp 2s cubic-bezier(.77,0,.175,1) infinite; }
+.motion-card:nth-child(2) .motion-demo { animation: motionReveal 2s cubic-bezier(.77,0,.175,1) infinite; }
+.motion-card:nth-child(3) .motion-demo { animation: motionScale 2s ease infinite; }
+.motion-card:nth-child(4) .motion-demo { animation: motionSlide 2s ease infinite; border-radius: 50%; }
+@keyframes motionFadeUp { 0%,100%{opacity:0;transform:translateY(20px)} 50%{opacity:1;transform:translateY(0)} }
+@keyframes motionReveal { 0%,100%{clip-path:inset(0 100% 0 0)} 50%{clip-path:inset(0 0% 0 0)} }
+@keyframes motionScale { 0%,100%{transform:scale(0.8);opacity:.3} 50%{transform:scale(1);opacity:1} }
+@keyframes motionSlide { 0%,100%{transform:translateX(-20px);opacity:0} 50%{transform:translateX(0);opacity:1} }
+.motion-name { font-family: var(--font-m); font-size: .72rem; letter-spacing: .1em; color: var(--fg); display: block; }
+.motion-desc { font-family: var(--font-m); font-size: .62rem; letter-spacing: .06em; color: var(--muted); margin-top: .4rem; display: block; line-height: 1.6; }
+
+/* ── BUTTONS ── */
+.comp-row { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin-bottom: 2rem; }
+.comp-label { font-family: var(--font-m); font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.btn-primary { display: inline-flex; align-items: center; gap: .5rem; background: var(--accent); color: var(--bg); font-family: var(--font-m); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; padding: .9rem 1.8rem; font-weight: 400; transition: transform .2s, box-shadow .2s; cursor: none; border: none; }
+.btn-primary:hover { transform: translate(-3px,-3px); box-shadow: 3px 3px 0 var(--fg); }
+.btn-ghost { font-family: var(--font-m); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg); text-decoration: none; opacity: .5; transition: opacity .2s; border-bottom: 1px solid transparent; cursor: none; background: none; border-top: none; border-left: none; border-right: none; padding-bottom: 2px; }
+.btn-ghost:hover { opacity: 1; border-bottom-color: var(--fg); }
+
+/* ── NAV COMPONENT ── */
+.nav-preview { background: rgba(10,10,8,.92); border: 1px solid var(--border); padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.nav-preview-logo { font-family: var(--font-m); font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg); }
+.nav-preview-links { display: flex; gap: 2rem; list-style: none; }
+.nav-preview-links a { font-family: var(--font-m); font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--fg); text-decoration: none; opacity: .45; }
+
+/* ── CARDS ── */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.srv-preview { background: var(--bg); padding: 2rem; position: relative; overflow: hidden; }
+.srv-preview::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .4s ease; }
+.srv-preview:hover::before { transform: scaleX(1); }
+.srv-preview:hover { background: rgba(200,240,78,.04); }
+.srv-preview-num { font-family: var(--font-m); font-size: .65rem; color: var(--muted); letter-spacing: .1em; margin-bottom: 1rem; }
+.srv-preview-name { font-family: var(--font-d); font-size: 2rem; letter-spacing: .03em; line-height: 1; }
+.srv-preview-desc { font-size: .82rem; line-height: 1.7; color: rgba(238,235,226,.4); margin-top: .75rem; }
+
+/* portfolio card preview */
+.port-preview { aspect-ratio: 2/1; background: #141412; position: relative; overflow: hidden; }
+.port-preview-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform .7s ease; }
+.port-preview:hover .port-preview-bg { transform: scale(1.04); }
+.port-ghost { font-family: var(--font-d); font-size: 5rem; color: rgba(238,235,226,.04); }
+.port-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,8,1) 0%, rgba(10,10,8,.7) 40%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; }
+.port-name { font-family: var(--font-d); font-size: 1.2rem; letter-spacing: .05em; }
+.port-tag { font-family: var(--font-m); font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-top: .3rem; }
+
+/* ── MODAL ── */
+.modal-preview { background: #141412; border: 1px solid rgba(238,235,226,.1); padding: 2.5rem; max-width: 440px; }
+.mp-title { font-family: var(--font-d); font-size: 1.8rem; letter-spacing: .05em; margin-bottom: .5rem; }
+.mp-desc { font-family: var(--font-m); font-size: .82rem; letter-spacing: .05em; color: var(--accent); margin-bottom: 1.8rem; line-height: 1.7; }
+.mp-btn { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border: 1px solid rgba(238,235,226,.1); background: transparent; font-family: var(--font-m); font-size: 1rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--fg); text-decoration: none; margin-bottom: .75rem; transition: background .2s; cursor: none; }
+.mp-btn:hover { background: rgba(238,235,226,.05); }
+.mp-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.mp-btn.primary:hover { background: #cef55c; }
+.mp-sub { font-family: var(--font-m); font-size: .75rem; color: var(--muted); margin-top: .25rem; display: block; text-transform: none; font-weight: 300; }
+.mp-btn.primary .mp-sub { color: rgba(10,10,8,.7); }
+.mp-divider { text-align: center; font-family: var(--font-m); font-size: .62rem; letter-spacing: .15em; color: var(--muted); margin: .25rem 0; text-transform: uppercase; }
+
+/* ── BADGES ── */
+.badge-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.badge { font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; padding: .25rem .6rem; }
+.badge-soon { border: 1px solid var(--muted); color: var(--muted); }
+.badge-soon-active { border: 1px solid var(--accent); color: var(--accent); }
+
+/* ── STATS ── */
+.stats-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.stat-preview { background: var(--bg); padding: 2rem; position: relative; overflow: hidden; }
+.stat-preview::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .5s ease; }
+.stat-preview:hover::after { transform: scaleX(1); }
+.stat-num { font-family: var(--font-d); font-size: clamp(2rem, 3vw, 3rem); line-height: 1; color: var(--fg); display: block; }
+.stat-lbl { font-family: var(--font-m); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: rgba(238,235,226,.55); margin-top: .5rem; display: block; }
+
+/* ── MARQUEE ── */
+.marquee-preview { background: var(--accent); padding: .9rem 0; overflow: hidden; }
+.marquee-track { display: flex; white-space: nowrap; animation: marquee 14s linear infinite; }
+.marquee-track span { font-family: var(--font-d); font-size: 1.1rem; letter-spacing: .1em; color: var(--bg); padding: 0 2rem; text-transform: uppercase; }
+.marquee-track span.sep { color: rgba(0,0,0,.3); }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* 푸터 */
+.sg-footer { padding: 2.5rem 3vw; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
+.sg-footer-logo { font-family: var(--font-d); font-size: 1.5rem; letter-spacing: .1em; }
+.sg-footer-link { font-family: var(--font-m); font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.sg-footer-link:hover { color: var(--fg); }
+
+/* will-reveal */
+.will-reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+.will-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  .type-row { grid-template-columns: 1fr; gap: 1rem; }
+  .type-usage { text-align: left; }
+  .stats-preview { grid-template-columns: repeat(2, 1fr); }
+  .sg-footer { flex-direction: column; gap: 1rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- 네비 -->
+<nav class="sg-nav">
+  <a href="index.html" class="sg-nav-logo">Yachae Studio</a>
+  <a href="index.html" class="sg-nav-back">← Back to Site</a>
+</nav>
+
+<!-- 헤더 -->
+<header class="sg-header">
+  <p class="sg-header-label">Design System · v1.0</p>
+  <h1 class="sg-header-title">Style<br><span>Guide.</span></h1>
+  <p class="sg-header-desc">야채디자인 홈페이지를 구성하는 파운데이션과 컴포넌트 시스템입니다. 색상, 서체, 여백, 모션 원칙과 실제 사용된 컴포넌트들을 확인할 수 있어요.</p>
+</header>
+
+<!-- ── FOUNDATION ── -->
+
+<!-- 1. Colors -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Foundation 01</div>
+  <h2 class="sg-section-title">Colors</h2>
+  <div class="color-grid">
+    <div class="color-swatch">
+      <div class="color-block" style="background:#0a0a08;border:1px solid rgba(238,235,226,.1)"></div>
+      <span class="color-name">Background</span>
+      <span class="color-value">--bg · #0a0a08</span>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#141412"></div>
+      <span class="color-name">Surface</span>
+      <span class="color-value">--mid · #141412</span>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#eeebe2"></div>
+      <span class="color-name">Foreground</span>
+      <span class="color-value">--fg · #eeebe2</span>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#c8f04e"></div>
+      <span class="color-name">Accent</span>
+      <span class="color-value">--accent · #c8f04e</span>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:#4a4a42"></div>
+      <span class="color-name">Muted</span>
+      <span class="color-value">--muted · #4a4a42</span>
+    </div>
+    <div class="color-swatch">
+      <div class="color-block" style="background:rgba(238,235,226,.55)"></div>
+      <span class="color-name">Subtle</span>
+      <span class="color-value">fg @ 55% opacity</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Typography -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Foundation 02</div>
+  <h2 class="sg-section-title">Typography</h2>
+  <div class="type-grid">
+    <div class="type-row">
+      <div class="type-meta">Bebas Neue<span>Display · EN</span></div>
+      <div class="type-sample-display">Yachae</div>
+      <div class="type-usage">Hero · Section Title · Stats</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Paperlogy<span>Display · KR</span></div>
+      <div class="type-sample-display" style="font-size:clamp(2rem,5vw,4rem)">야채디자인.</div>
+      <div class="type-usage">Hero · Title · Body KR</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">DM Mono<span>Mono · Label</span></div>
+      <div class="type-sample-mono">Figma / Template / Product Design</div>
+      <div class="type-usage">Nav · Label · Tag · Button</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta">Paperlogy Light<span>Body · 300</span></div>
+      <div class="type-sample-body-kr">현장을 잘 아는 디자이너가 함께합니다. 강의, 템플릿, 프로덕트 파트너십까지.</div>
+      <div class="type-usage">Description · Body</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Spacing -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Foundation 03</div>
+  <h2 class="sg-section-title">Spacing</h2>
+  <div class="spacing-grid">
+    <div class="spacing-row">
+      <span class="spacing-label">4px</span>
+      <div class="spacing-bar" style="width:4px"></div>
+      <span class="spacing-value">.25rem · 아이콘 간격, 미세 조정</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">8px</span>
+      <div class="spacing-bar" style="width:8px"></div>
+      <span class="spacing-value">.5rem · 태그, 배지 내부 패딩</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">16px</span>
+      <div class="spacing-bar" style="width:16px"></div>
+      <span class="spacing-value">1rem · 기본 간격</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">24px</span>
+      <div class="spacing-bar" style="width:24px"></div>
+      <span class="spacing-value">1.5rem · 컴포넌트 내부 패딩</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">40px</span>
+      <div class="spacing-bar" style="width:40px"></div>
+      <span class="spacing-value">2.5rem · 섹션 내부 간격</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">80px</span>
+      <div class="spacing-bar" style="width:80px"></div>
+      <span class="spacing-value">5rem · 섹션 간 여백</span>
+    </div>
+    <div class="spacing-row">
+      <span class="spacing-label">3vw</span>
+      <div class="spacing-bar" style="width:80px;background:rgba(200,240,78,.4)"></div>
+      <span class="spacing-value">반응형 · 페이지 좌우 여백</span>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Motion -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Foundation 04</div>
+  <h2 class="sg-section-title">Motion</h2>
+  <div class="motion-grid">
+    <div class="motion-card">
+      <div class="motion-demo"></div>
+      <span class="motion-name">Fade Up</span>
+      <span class="motion-desc">opacity 0→1 + translateY 30px→0<br>duration: 0.8s · ease</span>
+    </div>
+    <div class="motion-card">
+      <div class="motion-demo"></div>
+      <span class="motion-name">Reveal X</span>
+      <span class="motion-desc">clip-path inset 100%→0%<br>duration: 0.9s · cubic(.77,0,.175,1)</span>
+    </div>
+    <div class="motion-card">
+      <div class="motion-demo"></div>
+      <span class="motion-name">Scale In</span>
+      <span class="motion-desc">scale 0.8→1 + opacity<br>duration: 0.3s · ease · Modal</span>
+    </div>
+    <div class="motion-card">
+      <div class="motion-demo"></div>
+      <span class="motion-name">Slide Up</span>
+      <span class="motion-desc">translateY 110%→0<br>duration: 1s · cubic(.77,0,.175,1) · Hero</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPONENTS ── -->
+
+<!-- 5. Buttons -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 01</div>
+  <h2 class="sg-section-title">Buttons</h2>
+  <p class="comp-label">Primary</p>
+  <div class="comp-row">
+    <button class="btn-primary">서비스 보기 →</button>
+    <button class="btn-primary">강의 신청하기 →</button>
+  </div>
+  <p class="comp-label">Ghost</p>
+  <div class="comp-row">
+    <button class="btn-ghost">작업물 보기</button>
+    <button class="btn-ghost">전체 보기 →</button>
+  </div>
+</section>
+
+<!-- 6. Navigation -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 02</div>
+  <h2 class="sg-section-title">Navigation</h2>
+  <p class="comp-label" style="margin-bottom:1rem">Sticky Nav — 스크롤 80% 이후 등장</p>
+  <div class="nav-preview">
+    <span class="nav-preview-logo">Yachae Studio</span>
+    <ul class="nav-preview-links">
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 7. Cards -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 03</div>
+  <h2 class="sg-section-title">Cards</h2>
+  <p class="comp-label" style="margin-bottom:1rem">Service Card</p>
+  <div class="cards-grid" style="margin-bottom:2rem">
+    <div class="srv-preview">
+      <div class="srv-preview-num">01</div>
+      <div class="srv-preview-name">Figma Class</div>
+      <div class="srv-preview-desc">실무자를 위한 피그마 레슨입니다.</div>
+    </div>
+    <div class="srv-preview">
+      <div class="srv-preview-num">02</div>
+      <div class="srv-preview-name">Templates</div>
+      <div class="srv-preview-desc">실무에서 검증된 디자인 템플릿.</div>
+    </div>
+    <div class="srv-preview">
+      <div class="srv-preview-num">03</div>
+      <div class="srv-preview-name">Product</div>
+      <div class="srv-preview-desc">프로덕트 디자인 외주 및 협업.</div>
+    </div>
+  </div>
+  <p class="comp-label" style="margin-bottom:1rem">Portfolio Card</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)">
+    <div class="port-preview">
+      <div class="port-preview-bg"><span class="port-ghost">01</span></div>
+      <div class="port-overlay">
+        <div class="port-name">기술 뉴스 통합 플랫폼</div>
+        <div class="port-tag">Web · Mobile · PWA</div>
+      </div>
+    </div>
+    <div class="port-preview">
+      <div class="port-preview-bg"><span class="port-ghost">02</span></div>
+      <div class="port-overlay">
+        <div class="port-name">이벤트 장소 마켓플레이스</div>
+        <div class="port-tag">Web · Mobile · PWA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Modal -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 04</div>
+  <h2 class="sg-section-title">Modals</h2>
+  <div class="modal-preview">
+    <div class="mp-title">Contact</div>
+    <p class="mp-desc">편한 방법으로 연락주세요.<br>빠른 답변은 카카오톡을 이용해주세요.</p>
+    <a href="#" class="mp-btn primary" onclick="return false">
+      <span>카카오톡 상담하기<span class="mp-sub">오픈채팅 · 빠른 응답</span></span>
+      <span>→</span>
+    </a>
+    <div class="mp-divider">or</div>
+    <a href="#" class="mp-btn" onclick="return false">
+      <span>이메일로 연락하기<span class="mp-sub">yachae.design@gmail.com</span></span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<!-- 9. Badges -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 05</div>
+  <h2 class="sg-section-title">Badges</h2>
+  <p class="comp-label" style="margin-bottom:1rem">Coming Soon — Default / Hover</p>
+  <div class="badge-row">
+    <span class="badge badge-soon">Coming Soon</span>
+    <span class="badge badge-soon-active">Coming Soon · Hover</span>
+  </div>
+</section>
+
+<!-- 10. Stats Bar -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 06</div>
+  <h2 class="sg-section-title">Stats Bar</h2>
+  <div class="stats-preview">
+    <div class="stat-preview">
+      <span class="stat-num">100+</span>
+      <span class="stat-lbl">실무레슨</span>
+    </div>
+    <div class="stat-preview">
+      <span class="stat-num">4회</span>
+      <span class="stat-lbl">기업출강</span>
+    </div>
+    <div class="stat-preview">
+      <span class="stat-num">10+</span>
+      <span class="stat-lbl">외주 프로젝트</span>
+    </div>
+    <div class="stat-preview">
+      <span class="stat-num">5yr+</span>
+      <span class="stat-lbl">실무 경력</span>
+    </div>
+  </div>
+</section>
+
+<!-- 11. Marquee -->
+<section class="sg-section will-reveal">
+  <div class="sg-section-label">Component 07</div>
+  <h2 class="sg-section-title">Marquee</h2>
+  <div class="marquee-preview">
+    <div class="marquee-track">
+      <span>Figma Class</span><span class="sep">✦</span>
+      <span>UI Design</span><span class="sep">✦</span>
+      <span>Templates</span><span class="sep">✦</span>
+      <span>Product Design</span><span class="sep">✦</span>
+      <span>Yachae Studio</span><span class="sep">✦</span>
+      <span>Figma Class</span><span class="sep">✦</span>
+      <span>UI Design</span><span class="sep">✦</span>
+      <span>Templates</span><span class="sep">✦</span>
+      <span>Product Design</span><span class="sep">✦</span>
+      <span>Yachae Studio</span><span class="sep">✦</span>
+    </div>
+  </div>
+</section>
+
+<!-- 푸터 -->
+<footer class="sg-footer">
+  <div class="sg-footer-logo">YS</div>
+  <a href="index.html" class="sg-footer-link">← Back to Yachae Studio</a>
+</footer>
+
+<script>
+// 커서
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+// 스크롤 reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('revealed'); });
+},{threshold:.1});
+document.querySelectorAll('.will-reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
